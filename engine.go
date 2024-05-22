@@ -16,10 +16,12 @@ type Engine struct {
 }
 
 // Updates the state of all game objects.
-func update(engine *Engine){
+func update(engine *Engine, screenWidth int, screenHeight int){
 
 	for _, gameObject := range engine.GameObjects{
+
 		gameObject.Update()
+		gameObject.CheckEdges(screenWidth,screenHeight)
 		engine.Screen.SetContent(gameObject.GetX(), gameObject.GetY(), gameObject.Display(), nil, engine.Style)
 	}
 }
@@ -28,13 +30,15 @@ func update(engine *Engine){
 func (engine *Engine) Run(){
 
 	screen := engine.Screen
+	
+	width,height := screen.Size()
 
 	for {
 		screen.Clear()
 
-		update(engine)
+		update(engine,width,height)
 
-		time.Sleep(60 * time.Millisecond)
+		time.Sleep(20 * time.Millisecond)
 
 		screen.Show()
 	}

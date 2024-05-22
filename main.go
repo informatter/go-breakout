@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"github.com/gdamore/tcell/v2"
+	//"fmt"
 )
 
 
@@ -30,11 +31,14 @@ func getUserInput(screen tcell.Screen){
 func main(){
 	screen, err := tcell.NewScreen()
 
+
+
 	if err !=nil {
 		log.Fatalf("%+v",err)
 	}
 
 	initError:= screen.Init()
+	width,height := screen.Size()
 
 	if initError != nil {
 		log.Fatalf("%+v",initError)
@@ -46,21 +50,21 @@ func main(){
 
 
 	ballA :=Ball{
-		X:1,
-		Y:4,
+		X:width/2,
+		Y:height/2,
 		SpeedX: 1,
-		SpeedY: 0,
-	}
-	ballB :=Ball{
-		X:0,
-		Y:0,
-		SpeedX: 0,
 		SpeedY: 1,
 	}
+	// ballB :=Ball{
+	// 	X:0,
+	// 	Y:0,
+	// 	SpeedX: 0,
+	// 	SpeedY: 1,
+	// }
 	engine :=Engine{
 		Screen:      screen,
 		Style:       defStyle,
-		GameObjects: [] GameObject{&ballA, &ballB},
+		GameObjects: [] GameObject{&ballA}, //, &ballB},
 	}
 	go engine.Run()
 

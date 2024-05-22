@@ -1,6 +1,8 @@
 
 package main
 
+
+// Ball entity which implements the GameObject interface
 type Ball struct{
 	X int
 	Y int
@@ -8,20 +10,34 @@ type Ball struct{
 	SpeedY int
 }
 
-func (h Ball) GetX() int{
-	return h.X
+func (ball Ball) GetX() int{
+	return ball.X
 }
 
-func (h Ball) GetY() int{
-	return h.Y
+func (ball Ball) GetY() int{
+	return ball.Y
 }
 
-func (h Ball) Display() rune{
+func (ball Ball) Display() rune{
 	return '\u26AA'
 }
 
-func (h *Ball) Update(){
+func (ball *Ball) Update(){
 
-	h.X+=h.SpeedX
-	h.Y+=h.SpeedY
+	ball.X+=ball.SpeedX
+	ball.Y+=ball.SpeedY
+
+}
+
+
+func (ball *Ball) CheckEdges(screenWidth int, screenHeight int){
+
+    if ball.X <= 0 || ball.X >= screenWidth {
+        ball.SpeedX *= -1
+    }
+
+    if ball.Y <= 0 || ball.Y >= screenHeight {
+        ball.SpeedY *= -1
+    }
+
 }
