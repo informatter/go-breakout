@@ -23,6 +23,14 @@ func (paddle Paddle) GetY() int{
 	return paddle.Y
 }
 
+func (paddle Paddle) GetHeight() int{
+	return paddle.Height
+}
+
+func (paddle Paddle) GetWidth() int{
+	return paddle.Width
+}
+
 func (paddle Paddle) Display(engine *Engine) {
 	shape := strings.Repeat(" ", paddle.Width)
 	paddleStyle := tcell.StyleDefault.Background(tcell.ColorPurple).Foreground(tcell.ColorPurple)
@@ -47,7 +55,25 @@ func (paddle *Paddle) Update(){
 
 
 func (paddle *Paddle) CheckEdges(screenWidth int, screenHeight int){
+	
+	if (paddle.X <= 0){
+		paddle.X = 0
 
+		//wrap around
+		//paddle.X  = (screenWidth - paddle.Width ) - 1
+	}
+	
+	if(paddle.X + paddle.Width >= screenWidth ){
+
+		//wrap around
+		//paddle.X  = (paddle.X + paddle.Width) - screenWidth 
+
+		paddle.X = (screenWidth - paddle.Width)
+	}
+
+}
+
+func (paddle *Paddle) CheckCollision(gameObject GameObject){
 
 }
 

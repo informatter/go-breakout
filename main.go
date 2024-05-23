@@ -79,14 +79,14 @@ func main(){
 	ball :=Ball{
 		X:width/2,
 		Y:height/2,
-		SpeedX: 1,
-		SpeedY: 1,
+		SpeedX: 0,
+		SpeedY: 0,
 	}
 
 	paddle:=Paddle{
-		X: width/2,//width/2 ,
+		X: width/2,
 		Y: height - 1,
-		SpeedX: 2,
+		SpeedX: 4,
 		Width: 20,
 		Height: 1,
 	}

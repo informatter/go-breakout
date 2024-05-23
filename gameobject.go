@@ -6,6 +6,9 @@ type GameObject interface {
 	Display(engine *Engine)
 	GetX()(int)
 	GetY()(int)
+	GetHeight()(int)
+	GetWidth()(int)
 	// Checks if the game object is within the screen boundaries
 	CheckEdges(screenWidth int, screenHeight int)
+	CheckCollision(gameObject GameObject)
 }

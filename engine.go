@@ -20,6 +20,21 @@ type Engine struct {
 // Updates the state of all game objects.
 func update(engine *Engine, screenWidth int, screenHeight int){
 
+	// handle collisions
+	for i := range engine.GameObjects{
+
+		current := engine.GameObjects[i]
+		for j := range engine.GameObjects{
+
+			if (i==j){continue}
+
+			next := engine.GameObjects[j]
+
+			current.CheckCollision(next)
+		
+		}
+	}
+
 	for _, gameObject := range engine.GameObjects{
 
 		gameObject.Update()
