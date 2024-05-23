@@ -18,8 +18,17 @@ func (ball Ball) GetY() int{
 	return ball.Y
 }
 
-func (ball Ball) Display() rune{
-	return '\u26AA'
+func (ball Ball) Display(engine *Engine) {
+	shape := "\u26AA"
+	renderGameObject(
+		engine.Screen,
+		ball.GetX(),
+		ball.GetY(),
+		ball.GetX(),
+		ball.GetY(),
+		engine.Style,
+		shape,
+	)
 }
 
 func (ball *Ball) Update(){

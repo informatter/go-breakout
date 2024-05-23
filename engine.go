@@ -15,6 +15,8 @@ type Engine struct {
 	GameObjects [] GameObject
 }
 
+
+
 // Updates the state of all game objects.
 func update(engine *Engine, screenWidth int, screenHeight int){
 
@@ -22,7 +24,8 @@ func update(engine *Engine, screenWidth int, screenHeight int){
 
 		gameObject.Update()
 		gameObject.CheckEdges(screenWidth,screenHeight)
-		engine.Screen.SetContent(gameObject.GetX(), gameObject.GetY(), gameObject.Display(), nil, engine.Style)
+		gameObject.Display(engine)
+
 	}
 }
 

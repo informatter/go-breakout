@@ -3,7 +3,7 @@ package main
 // Represents the core behaviour for a game object 
 type GameObject interface {
 	Update()
-	Display() (rune)
+	Display(engine *Engine)
 	GetX()(int)
 	GetY()(int)
 	// Checks if the game object is within the screen boundaries
