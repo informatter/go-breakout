@@ -1,4 +1,4 @@
-module game/gopong
+module game/gobreakout
 
 go 1.22.3
 
@@ -6,6 +6,7 @@ require github.com/gdamore/tcell/v2 v2.7.4
 
 require (
 	github.com/gdamore/encoding v1.0.0 // indirect
+	github.com/gookit/event v1.1.2 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/rivo/uniseg v0.4.3 // indirect

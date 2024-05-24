@@ -4,6 +4,8 @@ import (
 	"github.com/gdamore/tcell/v2"
 	"time"
 	"os"
+	"github.com/gookit/event"
+
 )
 
 // Ball entity which implements the GameObject interface
