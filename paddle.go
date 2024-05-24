@@ -1,8 +1,7 @@
 package main
 
-//import "strings"
 import (
-	"fmt"
+	//"fmt"
 	"github.com/gdamore/tcell/v2"
 	"strings"
 )
@@ -13,10 +12,15 @@ type Paddle struct {
 	X      int
 	Y      int
 	SpeedX int
+	Active bool
 }
 
 func (paddle Paddle) GetX() int{
 	return paddle.X
+}
+
+func (paddle Paddle) GetActiveState() bool{
+	return paddle.Active
 }
 
 func (paddle Paddle) GetY() int{
@@ -46,10 +50,7 @@ func (paddle Paddle) Display(engine *Engine) {
 	)
 }
 
-func (paddle *Paddle) Update(){
-
-	// paddle.X+=paddle.SpeedX
-	// paddle.Y+=paddle.SpeedY
+func (paddle *Paddle) Update(engine Engine){
 
 }
 
@@ -75,17 +76,6 @@ func (paddle *Paddle) CheckEdges(screenWidth int, screenHeight int){
 
 func (paddle *Paddle) CheckCollision(gameObject GameObject){
 
-}
-
-func (paddle *Paddle) HandleEvent(eventChan <-chan Event) {
-	// for event := range eventChan {
-	// 	//fmt.Printf("Event received: Value=%d, Timestamp=%s\n", event.Value, event.Timestamp
-
-	// 	if (event.Value == "w"){
-	// 		fmt.Printf("fooooo")
-	// 	}
-	// }
-	fmt.Printf("fooooo")
 }
 
 func (paddle *Paddle) Move(movementType string){

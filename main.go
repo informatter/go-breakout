@@ -52,10 +52,8 @@ func quit(screen tcell.Screen){
 }
 
 func main(){
+
 	screen, err := tcell.NewScreen()
-
-	//eventChan := make(chan Event)
-
 
 	if err !=nil {
 		log.Fatalf("%+v",err)
@@ -68,9 +66,9 @@ func main(){
 		log.Fatalf("%+v",initError)
 	}
 
-	// Set default text style
-	defStyle := tcell.StyleDefault.Background(tcell.ColorDefault).Foreground(tcell.ColorDefault)
-	screen.SetStyle(defStyle)
+	// // Set default text style
+	defaultStyle := tcell.StyleDefault.Background(tcell.ColorDefault).Foreground(tcell.ColorDefault)
+	screen.SetStyle(defaultStyle)
 
 
 	defer quit(screen)
@@ -79,32 +77,72 @@ func main(){
 	ball :=Ball{
 		X:width/2,
 		Y:height/2,
-		SpeedX: 0,
-		SpeedY: 0,
+		SpeedX: 1,
+		SpeedY: 1,
+		Active:true,
+		Screen: screen,
 	}
 
 	paddle:=Paddle{
 		X: width/2,
 		Y: height - 1,
-		SpeedX: 4,
+		SpeedX: 10,
 		Width: 20,
 		Height: 1,
+		Active:true,
 	}
-	// ballB :=Ball{
-	// 	X:0,
-	// 	Y:0,
-	// 	SpeedX: 0,
-	// 	SpeedY: 1,
-	// }
+
+	var gameObjects []GameObject
+
+	gameObjects = append(gameObjects,&ball,&paddle)
+
+
+	
+	blockWidth := 8
+	blockHeight :=1
+	blockOffset := 1
+	initYPos:=10
+	totalColumns:= (width / (blockWidth + blockOffset)) + blockWidth
+
+	for i := range totalColumns{
+
+		xPos :=0
+		if (i > 0){
+			xPos = ( (blockWidth + blockOffset) * i)
+		}
+		for j := range 7 {
+			
+			yPos:=initYPos
+			if ( j > 0){
+				yPos = initYPos+( (blockHeight + blockOffset) * j)
+			}
+
+			block :=Block{
+				Width: blockWidth,
+				Height: blockHeight,
+				X:xPos,
+				Y:yPos,
+				Style: tcell.StyleDefault.Background(tcell.ColorOrange.TrueColor()).Foreground(tcell.ColorOrange.TrueColor()),
+				Active:true,
+			}
+			gameObjects = append(gameObjects,&block)
+		}
+	}
+
+	player := Player{
+		Life: 4,
+		Score: 0,
+	}
 	engine :=Engine{
 		Screen:      screen,
-		Style:       defStyle,
-		GameObjects: [] GameObject{&ball, &paddle}, //, &ballB},
+		Style:       defaultStyle,
+		GameObjects: gameObjects,
+		Player: &player,
 	}
 	go engine.Run()
 
 	getUserInput(screen,&paddle)
 
-	//paddle.HandleEvent(eventChan)
+	// paddle.HandleEvent(eventChan)
  
 }

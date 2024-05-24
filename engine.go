@@ -3,6 +3,7 @@ package main
 import (
 	"time"
 	"github.com/gdamore/tcell/v2"
+	"fmt"
 )
 
 /*
@@ -13,6 +14,8 @@ type Engine struct {
 	Screen tcell.Screen
 	Style tcell.Style
 	GameObjects [] GameObject
+	Score int
+	Player *Player
 }
 
 
@@ -37,12 +40,13 @@ func update(engine *Engine, screenWidth int, screenHeight int){
 
 	for _, gameObject := range engine.GameObjects{
 
-		gameObject.Update()
+		gameObject.Update(*engine)
 		gameObject.CheckEdges(screenWidth,screenHeight)
 		gameObject.Display(engine)
 
 	}
 }
+
 
 //Go routine which runs the game
 func (engine *Engine) Run(){
@@ -53,6 +57,8 @@ func (engine *Engine) Run(){
 
 	for {
 		screen.Clear()
+		renderGameObject(engine.Screen, 1, 1, 10, 1, engine.Style, fmt.Sprintf("Score: %d", engine.Player.Score))
+		renderGameObject(engine.Screen, 1, 4, 10, 4, engine.Style, fmt.Sprintf("Life: %d", engine.Player.Life))
 
 		update(engine,width,height)
 
