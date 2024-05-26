@@ -14,7 +14,6 @@ type Ball struct{
 	SpeedY int
 	Active bool
 	Screen tcell.Screen
-	C int
 }
 
 func (ball Ball) GetX() int{
