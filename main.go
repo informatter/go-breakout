@@ -2,14 +2,11 @@ package main
 
 import (
 	"log"
-	//"os"
 	"github.com/gdamore/tcell/v2"
-	//"fmt"
 )
 
-
 /*
-Polls for user input events and blocks the main thread while waiting 
+Polls for user input events and blocks the main thread while waiting
 */
 func getUserInput(screen tcell.Screen, paddle *Paddle ){ //eventChan chan<- Event
 	for {
@@ -66,7 +63,7 @@ func main(){
 		log.Fatalf("%+v",initError)
 	}
 
-	// // Set default text style
+	//Set default text style
 	defaultStyle := tcell.StyleDefault.Background(tcell.ColorDefault).Foreground(tcell.ColorDefault)
 	screen.SetStyle(defaultStyle)
 
@@ -97,7 +94,6 @@ func main(){
 	gameObjects = append(gameObjects,&ball,&paddle)
 
 
-	
 	blockWidth := 8
 	blockHeight :=1
 	blockOffset := 1
@@ -130,7 +126,7 @@ func main(){
 	}
 
 	player := Player{
-		Life: 4,
+		Life: 3,
 		Score: 0,
 	}
 	engine :=Engine{
@@ -139,10 +135,10 @@ func main(){
 		GameObjects: gameObjects,
 		Player: &player,
 	}
+
+	engine.InitEventListeners()
 	go engine.Run()
 
 	getUserInput(screen,&paddle)
-
-	// paddle.HandleEvent(eventChan)
  
 }

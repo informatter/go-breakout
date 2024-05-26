@@ -1,9 +1,12 @@
 package main
 
 import (
-	"time"
-	"github.com/gdamore/tcell/v2"
 	"fmt"
+	//"os"
+	"time"
+
+	"github.com/gdamore/tcell/v2"
+	"github.com/gookit/event"
 )
 
 /*
@@ -16,6 +19,23 @@ type Engine struct {
 	GameObjects [] GameObject
 	Score int
 	Player *Player
+	IsGameOver bool
+}
+
+func (engine *Engine) onGameOverHandler(e event.Event) error{
+
+	heightOffset := 4
+	width,height := engine.Screen.Size()
+	renderGameObject(engine.Screen, width/2, height/2 + heightOffset, 500, height/2 + heightOffset, engine.Style, "GAME OVER!")
+	renderGameObject(engine.Screen, width/2 -3, (height/2) + heightOffset*2, 1000, (height/2) + heightOffset*2, engine.Style, "PRESS ESC TO EXIT")
+	return nil
+}
+
+func (engine *Engine) onBallDropedHandler(e event.Event) error{
+
+	engine.Player.Life-=1
+	renderGameObject(engine.Screen, 1, 4, 10, 4, engine.Style, fmt.Sprintf("Life: %d", engine.Player.Life))
+	return nil
 }
 
 
@@ -47,6 +67,11 @@ func update(engine *Engine, screenWidth int, screenHeight int){
 	}
 }
 
+func (engine Engine) InitEventListeners(){
+	event.On("game-over", event.ListenerFunc(engine.onGameOverHandler), event.Normal)
+	event.On("ball-droped",event.ListenerFunc( engine.onBallDropedHandler),event.Normal)
+}
+
 
 //Go routine which runs the game
 func (engine *Engine) Run(){
@@ -55,15 +80,14 @@ func (engine *Engine) Run(){
 	
 	width,height := screen.Size()
 
-	for {
+	for  {
+
 		screen.Clear()
 		renderGameObject(engine.Screen, 1, 1, 10, 1, engine.Style, fmt.Sprintf("Score: %d", engine.Player.Score))
 		renderGameObject(engine.Screen, 1, 4, 10, 4, engine.Style, fmt.Sprintf("Life: %d", engine.Player.Life))
-
 		update(engine,width,height)
-
 		time.Sleep(20 * time.Millisecond)
-
 		screen.Show()
 	}
+	
 }

@@ -1,11 +1,9 @@
-
 package main
+
 import (
 	"github.com/gdamore/tcell/v2"
 	"time"
-	"os"
 	"github.com/gookit/event"
-
 )
 
 // Ball entity which implements the GameObject interface
@@ -16,6 +14,7 @@ type Ball struct{
 	SpeedY int
 	Active bool
 	Screen tcell.Screen
+	C int
 }
 
 func (ball Ball) GetX() int{
@@ -53,27 +52,27 @@ func (ball Ball) Display(engine *Engine) {
 
 func resetPosition(ball *Ball){
 	width,height := ball.Screen.Size()
-	ball.X = width /2
+	ball.X = width / 2
 	ball.Y = height / 2
 }
 
-
-
 func (ball *Ball) Update(engine Engine){
+
 
 	if(ball.Active){
 		ball.X+=ball.SpeedX
 		ball.Y+=ball.SpeedY
-	}else{
-
-		// makes ball active again after a small pause
-		engine.Player.Life-=1
-		if (engine.Player.Life == 0){
-			os.Exit(0)
-		}
-		time.Sleep(2 * time.Second)
-		ball.Active = true
+		return
 	}
+
+	if (engine.Player.Life == 0){
+		event.Fire("game-over",event.M{})
+		return
+	}
+
+	//makes ball active again after a small pause
+	time.Sleep(2 * time.Second)
+	ball.Active = true
 }
 
 
@@ -93,13 +92,13 @@ func (ball *Ball)  CheckCollision(g GameObject){
 	
 	if (hasCollision  && !isBlock){
 		reflect(ball,g)
-		//ball.Screen.Beep()
 	}
 	if (hasCollision && isBlock && g.GetActiveState()){
 		reflect(ball,g)
-		//ball.Screen.Beep()
 	}
 }
+
+
 
 
 func (ball *Ball) CheckEdges(screenWidth int, screenHeight int){
@@ -112,10 +111,10 @@ func (ball *Ball) CheckEdges(screenWidth int, screenHeight int){
         ball.SpeedX *= -1
     }
 
-
 	if (ball.Y >= screenHeight) {
 		ball.Active = false
 		resetPosition(ball)
+		event.Fire("ball-droped",event.M{})
 
     }else if (ball.Y <= 0){
 		ball.SpeedY *= -1
