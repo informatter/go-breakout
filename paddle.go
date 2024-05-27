@@ -49,8 +49,24 @@ func (paddle Paddle) Display(engine *Engine) {
 	)
 }
 
+
+
 func (paddle *Paddle) Update(engine Engine){
 
+    select {
+    case msg := <-PaddleMoveMessages:
+
+        switch msg {
+        case "paddle-move-left":
+			paddle.X += paddle.SpeedX *-1
+
+        case "paddle-move-right":
+			paddle.X += paddle.SpeedX
+        default:
+        }
+    default:
+
+    }
 }
 
 

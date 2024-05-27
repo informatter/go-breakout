@@ -1,6 +1,7 @@
 package main
 
 import (
+
 	"log"
 	"github.com/gdamore/tcell/v2"
 )
@@ -8,7 +9,7 @@ import (
 /*
 Polls for user input events and blocks the main thread while waiting
 */
-func getUserInput(screen tcell.Screen, paddle *Paddle ){ //eventChan chan<- Event
+func getUserInput(screen tcell.Screen){
 	for {
 		event := screen.PollEvent() // waits for events for arrive and blocks the main thread
 
@@ -17,21 +18,13 @@ func getUserInput(screen tcell.Screen, paddle *Paddle ){ //eventChan chan<- Even
 		case *tcell.EventResize:
 			screen.Sync()
 		case *tcell.EventKey:
-			if event.Key() == tcell.KeyEscape || event.Key() == tcell.KeyCtrlC {
+			key := event.Key()		
+			if key == tcell.KeyEscape || key == tcell.KeyCtrlC {
 				return
-			}else if event.Rune() == 'a' {
-				//game.Player1.Paddle.MoveUp()
-				// TODO emmit event 
-				// eventChan <- Event{
-				// 	Value: "w",
-				// }
-				paddle.Move("a")
-				//paddle.X += paddle.SpeedX 
-			} else if event.Rune() == 'd' {
-				// eventChan <- Event{
-				// 	Value: "d",
-				// }
-				paddle.Move("d")
+			}else if (key == tcell.KeyLeft){
+				PaddleMoveMessages <- "paddle-move-left"
+			}else if (key == tcell.KeyRight){
+				PaddleMoveMessages <- "paddle-move-right"
 			}
 		}
 	}
@@ -51,6 +44,7 @@ func quit(screen tcell.Screen){
 func main(){
 
 	screen, err := tcell.NewScreen()
+
 
 	if err !=nil {
 		log.Fatalf("%+v",err)
@@ -136,9 +130,9 @@ func main(){
 		Player: &player,
 	}
 
-	engine.InitEventListeners()
+
 	go engine.Run()
 
-	getUserInput(screen,&paddle)
+	getUserInput(screen)
  
 }
