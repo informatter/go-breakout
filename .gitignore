@@ -9,6 +9,7 @@
 *.dll
 *.so
 *.dylib
+breakout_sounds
 
 # Test binary, built with `go test -c`
 *.test
