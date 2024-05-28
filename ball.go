@@ -64,7 +64,6 @@ func (ball *Ball) Update(engine Engine){
 	}
 
 	if (engine.Player.Life == 0){
-		//event.Fire("game-over",event.M{})
 		GameStateMessages <- "game-over"
 		return
 	}
@@ -113,7 +112,6 @@ func (ball *Ball) CheckEdges(screenWidth int, screenHeight int){
 	if (ball.Y >= screenHeight) {
 		ball.Active = false
 		resetPosition(ball)
-		//event.Fire("ball-droped",event.M{})
 		GameStateMessages <- "ball-droped"
 
     }else if (ball.Y <= 0){
